@@ -1,34 +1,43 @@
-# Proyecto Final: Taquería El Docker
+# Proyecto Final: Taquería "El Docker"
 
-Aplicación web de gestión de pedidos para una taquería, desarrollada con Django, PostgreSQL y Docker. Permite a los usuarios ver el menú, armar un carrito de compras y dar seguimiento al estado de sus pedidos.
+Plataforma web para la gestión de pedidos de una taquería, desarrollada con Django y Docker.
 
 ## Características del Proyecto
 
-### Modelos de Datos
-* **Categoria & Taco:** Gestión del menú con imágenes.
-* **Pedido & DetallePedido:** Relaciona usuarios con productos, calculando subtotales y totales.
-* **Usuario:** Sistema nativo de Django.
+### 1. Modelos de Datos (Base de Datos)
+El proyecto utiliza **PostgreSQL** y define relaciones clave:
+* **Categoria - Taco:** Relación Uno a Muchos. Un taco pertenece a una categoría.
+* **Usuario - Pedido:** Relación Uno a Muchos. Un usuario genera múltiples pedidos.
+* **Pedido - DetallePedido - Taco:** Relación Muchos a Muchos (con tabla intermedia) para guardar qué tacos y cuántos de cada uno lleva un pedido.
 
-### Funcionalidades Clave
-1.  **Carrito de Compras:** Persistencia basada en sesiones (sin necesidad de login inicial).
-2.  **Gestión de Pedidos:** Flujo completo desde la selección hasta la confirmación.
-3.  **Toque Personal (Extra):** Sistema de **Estados del Pedido**. Los pedidos cambian visualmente de "Pendiente" a "En Preparación" y "Entregado".
-4.  **API REST:** Endpoint `/api/tacos/` para consumo externo de datos.
+### 2. Funcionalidades
+* **Menú Dinámico:** Muestra los tacos registrados en la base de datos con sus imágenes.
+* **Carrito de Compras:** Implementado con sesiones de Django (persiste mientras el navegador esté abierto).
+* **Gestión de Pedidos:** Los usuarios pueden confirmar su carrito y generar un pedido.
+* **Historial con Estados (Toque Personal):** Los pedidos tienen un estado visual (Pendiente, En Preparación, Entregado).
+* **API REST:** Endpoint `/api/tacos/` disponible para consultar el menú en formato JSON.
 
-### Tecnologías
-* **Backend:** Django 5 + Django REST Framework.
-* **Base de Datos:** PostgreSQL 16.
-* **Contenedores:** Docker Compose para orquestar DB, Admin y Web.
-* **Frontend:** Bootstrap 5 + JavaScript para modo oscuro y alertas.
+### 3. Tecnologías
+* **Backend:** Django 5.0
+* **API:** Django REST Framework
+* **Frontend:** HTML5, CSS3, Bootstrap 5, JavaScript.
+* **Contenedores:** Docker y Docker Compose (Web, DB, pgAdmin).
 
-## Cómo ejecutar
+## ⚙️ Cómo ejecutar
 
-1.  Construir los contenedores:
+1.  **Construir los contenedores:**
     ```bash
     docker-compose build
     ```
-2.  Iniciar el servidor:
+2.  **Levantar el servidor:**
     ```bash
     docker-compose up
     ```
-3.  Acceder a la web: http://localhost:8000
+3.  **Entrar a la aplicación:**
+    Abre tu navegador en [http://localhost:8000](http://localhost:8000)
+
+## 📂 Estructura de Archivos Principales
+* `taqueria/models.py`: Definición de tablas (Taco, Pedido, etc).
+* `taqueria/views.py`: Lógica del carrito, menú y creación de pedidos.
+* `taqueria/urls.py`: Rutas de la aplicación web y API.
+* `docker-compose.yml`: Orquestación de servicios (Postgres y Django).
