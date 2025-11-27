@@ -1,6 +1,12 @@
 # tasks/urls.py
+from xml.etree.ElementInclude import include
 from django.urls import path
 from . import views
+from rest_framework.routers import DefaultRouter
+
+router = DefaultRouter()
+router.register(r'', views.TaskViewSet, basename='task')
+
 
 urlpatterns = [
     path('', views.task_list, name='task_list'),

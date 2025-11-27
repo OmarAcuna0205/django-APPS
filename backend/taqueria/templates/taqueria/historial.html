@@ -1,0 +1,36 @@
+{% extends 'taqueria/base.html' %}
+
+{% block content %}
+    <h2 class="mb-4">Historial de Pedidos</h2>
+
+    <div class="w-75 mx-auto">
+        {% for pedido in pedidos %}
+            <div class="card mb-3 text-start">
+                <div class="card-header d-flex justify-content-between align-items-center">
+                    <span><strong>Pedido #{{ pedido.id }}</strong> - {{ pedido.fecha|date:"d M Y H:i" }}</span>
+                    
+                    {% if pedido.estado == 'pendiente' %}
+                        <span class="badge bg-warning text-dark">Pendiente</span>
+                    {% elif pedido.estado == 'preparacion' %}
+                        <span class="badge bg-info text-dark">Cocinando</span>
+                    {% else %}
+                        <span class="badge bg-success">Entregado</span>
+                    {% endif %}
+                </div>
+                <div class="card-body">
+                    <ul class="list-group list-group-flush mb-3">
+                        {% for detalle in pedido.detalles.all %}
+                            <li class="list-group-item d-flex justify-content-between">
+                                <span>{{ detalle.cantidad }}x {{ detalle.taco.nombre }}</span>
+                                <span>${{ detalle.subtotal }}</span>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                    <h5 class="text-end">Total: ${{ pedido.total }}</h5>
+                </div>
+            </div>
+        {% empty %}
+            <p>Aún no has realizado pedidos.</p>
+        {% endfor %}
+    </div>
+{% endblock %}

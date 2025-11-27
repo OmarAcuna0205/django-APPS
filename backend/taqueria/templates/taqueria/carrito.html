@@ -1,0 +1,52 @@
+{% extends 'taqueria/base.html' %}
+
+{% block content %}
+    <h2 class="mb-4">Tu Carrito de Compras</h2>
+
+    {% if carrito %}
+        <div class="table-responsive w-75 mx-auto">
+            <table class="table table-hover text-center align-middle">
+                <thead class="table-dark">
+                    <tr>
+                        <th>Producto</th>
+                        <th>Precio</th>
+                        <th>Cant.</th>
+                        <th>Total</th>
+                        <th>Acción</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for id, item in carrito.items %}
+                    <tr>
+                        <td>{{ item.nombre }}</td>
+                        <td>${{ item.precio }}</td>
+                        <td>{{ item.cantidad }}</td>
+                        <td>${% widthratio item.precio 1 item.cantidad %}</td>
+                        <td>
+                            <a href="{% url 'eliminar_carrito' id %}" class="btn btn-sm btn-danger">X</a>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+
+        <h3 class="mt-3">Total a Pagar: <span class="text-success">${{ total }}</span></h3>
+        
+        <div class="mt-4">
+            <a href="{% url 'menu' %}" class="btn btn-secondary">Seguir Pidiendo</a>
+            {% if user.is_authenticated %}
+                <a href="{% url 'procesar_pedido' %}" class="btn btn-success btn-lg">Confirmar Pedido</a>
+            {% else %}
+                <a href="/admin/" class="btn btn-warning">Inicia Sesión para Ordenar</a>
+            {% endif %}
+        </div>
+
+    {% else %}
+        <div class="alert alert-info w-50 mx-auto">
+            Tu carrito está vacío. ¡Ve a pedir unos tacos!
+            <br><br>
+            <a href="{% url 'menu' %}" class="btn btn-primary">Ir al Menú</a>
+        </div>
+    {% endif %}
+{% endblock %}

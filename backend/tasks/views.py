@@ -2,6 +2,12 @@ from django.shortcuts import render, redirect, get_object_or_404
 from .models import Task, Category
 from .forms import TaskForm # Asegúrate de que TaskForm esté importado
 from django.contrib import messages # Importar el módulo messages
+from rest_framework import viewsets
+from .serializers import TaskSerializer, CategorySerializer
+
+class TaskViewSet(viewsets.ModelViewSet):
+    queryset = Task.objects.all()
+    serializer_class = TaskSerializer
 
 # Create your views here.
 # Vista para mostrar la lista de tareas
