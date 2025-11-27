@@ -5,6 +5,9 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Taco, Categoria, Pedido, DetallePedido
+from django.contrib.auth import logout
+from rest_framework import generics
+from .serializers import TacoSerializer
 
 # 1. Vista del Menú Principal
 def menu_view(request):
@@ -88,9 +91,18 @@ def procesar_pedido(request):
     messages.success(request, f"¡Pedido #{pedido.id} confirmado con éxito!")
     return redirect('historial_pedidos')
 
+def logout_view(request):
+    logout(request)
+    messages.success(request, "¡Sesión cerrada exitosamente!")
+    return redirect('menu')
+
 # 6. Historial de Pedidos (Toque Personal y Requisito)
 @login_required
 def historial_pedidos(request):
     # Traemos los pedidos del usuario ordenados del más nuevo al más viejo
     pedidos = Pedido.objects.filter(usuario=request.user).order_by('-fecha')
     return render(request, 'taqueria/historial.html', {'pedidos': pedidos})
+
+class TacoListAPI(generics.ListAPIView):
+    queryset = Taco.objects.all()
+    serializer_class = TacoSerializer

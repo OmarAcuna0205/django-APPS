@@ -8,4 +8,6 @@ urlpatterns = [
     path('eliminar/<int:taco_id>/', views.eliminar_del_carrito, name='eliminar_carrito'),
     path('procesar/', views.procesar_pedido, name='procesar_pedido'),
     path('mis-pedidos/', views.historial_pedidos, name='historial_pedidos'),
+    path('logout/', views.logout_view, name='logout'),
+    path('api/tacos/', views.TacoListAPI.as_view(), name='api_tacos'),
 ]
